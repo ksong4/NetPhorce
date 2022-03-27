@@ -13,8 +13,8 @@ Authors@R: c(
     )
 Description: Phosphorylation of proteins can regulate their turnover and activity, and phosphorylation at different sites can facilitate distinct programs of regulations. Studying phosphorylation relays in a network is thus important to understand plant responses, however, downstream analyses, including data-driven network inference, are still a bottleneck. We developed an R package and Shiny application, NetPhorce, which serves as a portal for users who have little or no experience in coding and mathematical analysis for exploratory and in-depth analyses of label-free phosphoproteomics data. The R package allows users to perform data filtering steps, quality control, statistical analysis, multiple data visualization, and network inference.
 License: GPL (>= 3)
-URL: https://XXX/
-BugReports: https://github.com/
+URL: https://github.com/ksong4/NetPhorce
+BugReports: https://github.com/ksong4/NetPhorce/issues
 LazyData: true
 Depends:
     R (>= 3.5.0)

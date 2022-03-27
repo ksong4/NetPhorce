@@ -12,13 +12,11 @@ devtools::install_github("ksong4/NetPhorce")
 ```
 
 ## NetPhorce Function Structure
-<img src="man/figures/NetPhorceProcess.PNG" align="center"/>
+<img src="man/figures/NetPhorceProcess.png" align="center"/>
 
 ## NetPhorce Tutorials 
 - [Data Processing Tutorial](articles/NetPhorce.html)
 - [Plotting Tutorial](articles/rMD_V2_TwoConditionDemonstrationWithPlots.html)
 - [Data Extraction Tutorial](articles/rMD_V3_DataExtractionTutorial.html)
 - [NetPhorce Shiny to R](articles/rMD_V4_ShinyToR.html)
-
-
 
