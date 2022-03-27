@@ -3,23 +3,12 @@
 <!-- badges: start -->
 
 The NetPhorce Package provies tools to performs data filtering steps, quality control, statistical analysis, data visualization, and network inference for phosphoproteomics data. Phosphorylation of proteins can regulate their turnover and activity, and phosphorylation at different sites can facilitate distinct programs of regulations. Studying phosphorylation relays in a network is thus important to understand plant responses, however downstream analyses, including data-driven network inference, is still a bottleneck. 
-
-## Installation
-
-The latest stable version can be installed from CRAN:
-<div class=".pkgdown-release">
-
-``` r
-install.packages('NetPhorce')
-```
-
-</div>
-
+Please check out the [NetPhorce Website](https://ksong4.github.io/NetPhorce/) to see guides and tutorials for NetPhorce.
 
 ## Install from GitHub
-```
-# install.packages("devtools")
-# devtools::install_github("ksong4/NetPhorce")
+```r
+install.packages("devtools")
+devtools::install_github("ksong4/NetPhorce")
 ```
 
 ## NetPhorce Function Structure
