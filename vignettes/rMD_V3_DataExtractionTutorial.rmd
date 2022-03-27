@@ -1,0 +1,105 @@
+---
+title: "NetPhorce Data Extraction Tutorial"
+output: 
+  html_document:
+      toc: true
+      toc_depth: 3
+      toc_float: true
+      
+vignette: >
+  %\VignetteIndexEntry{Data Extraction Tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(NetPhorce)
+# library(DT)
+# library(devtools)
+# load_all()
+```
+
+## 1.0 Process the Data
+```{r processFullData, results='hide'}
+## Loading One Condition Data
+data("twoConditionsExample", package = "NetPhorce")
+
+## ## Identify the Key Columns
+identifiedCols <- confirmColumnNames(rawMaxQuant = twoConditionsExample,
+                                     positionCol = "Position",
+                                     reverseCol = "Reverse",
+                                     localizationProbCol = "Localization prob",
+                                     potentialContaminationCol = "Potential contaminant",
+                                     aminoAcidCol = "Amino acid",
+                                     uniqueIDCol = "Protein",
+                                     seqWindowIDCol = "Sequence window",
+                                     fastaIDCol = "Fasta headers")
+
+## Identify the Intensity Columns with Condition, Time Point and Replication Information
+intensityCols <- confirmIntensityColumns(rawMaxQuant = twoConditionsExample,
+                                         intensityPattern = "con_time_rep",
+                                         verbose = TRUE)
+
+## Process the data based on the identified columns
+netPhorceData <- processData(rawMaxQuant = twoConditionsExample,
+                             processedColNames = identifiedCols,
+                             processedIntensity = intensityCols,
+                             minReplication = 3,
+                             minLocalProb = 0.75)
+
+## Validating the Kinase/Phosphatase Information
+netPhorceData <- validateKinaseTable(netPhorceData = netPhorceData,
+                                     defaultKinaseTable = TRUE,
+                                     abbrev = "Ath")
+
+## Regulation Validation based on user inputs
+netPhorceData <- regulationCheck(netPhorceData = netPhorceData,
+                                 upReg = 0.25,
+                                 downReg = 0.25,
+                                 absMinThreshold = 0.1,
+                                 qValueCutOff = 0.05,
+                                 verbose = TRUE)
+
+## Network Analysis
+netPhorceData <- networkAnalysis(netPhorceData = netPhorceData,
+                               requestPlotData = TRUE)
+```
+
+## 2.0 Extract Summary Table
+```{r}
+summaryTable <- extractSummaryTable(netPhorceData = netPhorceData)
+DT::datatable(summaryTable,
+              options = list(
+                pageLength = 15, 
+                scrollX = TRUE,
+                rownames = FALSE))
+```
+
+
+## 3.0 Extract Network Results
+```{r}
+networkResults <- extractNetworkResults(netPhorceData = netPhorceData)
+DT::datatable(networkResults,
+              options = list(
+                pageLength = 15, 
+                scrollX = TRUE,
+                rownames = FALSE))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

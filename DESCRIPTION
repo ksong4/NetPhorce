@@ -1,0 +1,66 @@
+Package: NetPhorce
+Title: Phosphoproteomics Network Analysis (NetPhorce)
+Version: 1.0.0
+Date: 2021-11-07
+Authors@R: c(
+    person("Kuncheng", "Song", 
+           email = "ksong4@ncsu.edu",   
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-8680-1970")),
+    person("Lisa", "Van den Broeck", role = "aut",
+           email = "lfvanden@ncsu.edu",
+           comment = c(ORCID = "0000-0003-0226-0757"))
+    )
+Description: Phosphorylation of proteins can regulate their turnover and activity, and phosphorylation at different sites can facilitate distinct programs of regulations. Studying phosphorylation relays in a network is thus important to understand plant responses, however, downstream analyses, including data-driven network inference, are still a bottleneck. We developed an R package and Shiny application, NetPhorce, which serves as a portal for users who have little or no experience in coding and mathematical analysis for exploratory and in-depth analyses of label-free phosphoproteomics data. The R package allows users to perform data filtering steps, quality control, statistical analysis, multiple data visualization, and network inference.
+License: GPL (>= 3)
+URL: https://XXX/
+BugReports: https://github.com/
+LazyData: true
+Depends:
+    R (>= 3.5.0)
+Imports: 
+    SummarizedExperiment,
+    methods,
+    purrr,
+    utils,
+    broom,
+    stringr,
+    tibble,
+    dplyr,
+    readr,
+    magrittr,
+    tidyr,
+    randomcoloR,
+    ggplot2,
+    qvalue,
+    vsn,
+    plotly,
+    ggpubr,
+    dynamicTreeCut,
+    colorspace,
+    igraph,
+    scales,
+    stats,
+    forcats,
+    assertthat,
+    ellipse,
+    DT, 
+    visNetwork,
+    multidplyr
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Collate:
+  'global.R'
+  'modifiedDEPFunction.R'
+  'classes.R'
+  'data.R'
+  'preProcessing.R'
+  'processData.R'
+  'network.R'
+  'plotting.R'
+  'extractData.R'
+Suggests: 
+    rmarkdown,
+    knitr, curl
+VignetteBuilder: knitr

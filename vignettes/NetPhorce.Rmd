@@ -1,0 +1,98 @@
+---
+title: "NetPhorce"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{NetPhorce}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(NetPhorce)
+library(DT)
+```
+
+
+## Introduction
+The following tutorials is based on a single condition experiment data. 
+
+## 1.0 Loading One Condition Example
+```{r}
+## Loading One Condition Data
+data("oneConditionExample", package = "NetPhorce")
+DT::datatable(oneConditionExample, 
+              rownames = FALSE, 
+              options = list(
+                pageLength = 5, 
+                scrollX = TRUE,
+                rownames = FALSE,
+                autoWidth = TRUE, 
+                columnDefs = list(list(targets=c(7), width = "700px"),
+                                  list(className = 'dt.center', targets = "_all"))
+              )) 
+```
+
+## 2.0 Pre-processing the raw MaxQuant data
+### 2.1 Identifying the Key Columns
+```{r}
+## Identify the Key Columns
+identifiedCols <- confirmColumnNames(rawMaxQuant = oneConditionExample,
+                                     positionCol = "Position",
+                                     reverseCol = "Reverse",
+                                     localizationProbCol = "Localization prob",
+                                     potentialContaminationCol = "Potential contaminant",
+                                     aminoAcidCol = "Amino acid",
+                                     uniqueIDCol = "Protein",
+                                     seqWindowIDCol = "Sequence window",
+                                     fastaIDCol = "Fasta headers")
+```
+
+### 2.2 Identifying the pattern for the intensity columns
+```{r}
+## Identify the Intensity Columns with Condition, Time Point and Replication Information
+intensityCols <- confirmIntensityColumns(rawMaxQuant = oneConditionExample,
+                                         intensityPattern = "con_time_rep",
+                                         verbose = TRUE)
+```
+
+## 3.0 Process the raw MaxQuant data
+```{r}
+## Process the data based on the identified columns
+netPhorceData <- processData(rawMaxQuant = oneConditionExample,
+                             processedColNames = identifiedCols,
+                             processedIntensity = intensityCols,
+                             minReplication = 3,
+                             minLocalProb = 0.75)
+```
+
+## 4.0 Validate the Kinases and Phosphatase data for the processed netPhorce data
+```{r}
+## Validating the Kinase/Phosphatase Information
+netPhorceData <- validateKinaseTable(netPhorceData = netPhorceData,
+                                     defaultKinaseTable = TRUE,
+                                     abbrev = "Ath")
+```
+
+## 5.0 Confirmation on the Regulation Thresholds for the netPhorce data
+```{r}
+## Regulation Validation based on user inputs
+netPhorceData <- regulationCheck(netPhorceData = netPhorceData,
+                                 upReg = 0.25,
+                                 downReg = 0.25,
+                                 absMinThreshold = 0.1,
+                                 qValueCutOff = 0.05,
+                                 verbose = TRUE)
+```
+
+## 6.0 Network Anlaysis
+```{r}
+## Network Analysis
+netPhorceData <- networkAnalysis(netPhorceData = netPhorceData,
+                               requestPlotData = TRUE)
+
+```

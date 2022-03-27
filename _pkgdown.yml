@@ -1,0 +1,57 @@
+url: ~
+
+template:
+  params:
+    bootswatch: cosmo
+
+
+reference:
+  - title: Demonstration Data
+    contents:
+    - oneConditionExample
+    - twoConditionsExample
+    - kinasesPhosphatases
+
+  - title: Pre-processing Raw Data
+    contents:
+    - confirmColumnNames
+    - confirmIntensityColumns
+
+  - title: Validate Raw Data
+    contents:
+    - processData
+
+  - title: Pre-Processing for Network Analysis
+    contents:
+    - checkPreloadKinaseTable
+    - validateKinaseTable
+    - regulationCheck
+
+  - title: Network Analysis
+    contents:
+    - networkAnalysis
+
+  - title: Extract/Convert Processed Data
+    contents:
+    - extractSummaryTable
+    - extractNetworkResults
+    - convertShinyToR
+
+  - title: Preprocessing Data for Plotting
+    contents:
+    - findClusters
+    - findPeptideIDs
+    - findUniqueIDs
+
+  - title: Plotting
+    contents:
+    - plotDistribution
+    - plotHistBox
+    - plotPCA
+    - plotClustersHeatmap
+    - plotUniqueIDsHeatmaps
+    - plotSinglePeptide
+    - plotMultiPeptides
+    - plotNetPhorce
+    - plotRegulation
+

@@ -1,0 +1,263 @@
+---
+title: "NetPhorce Plotting Demonstration"
+output: 
+  html_document:
+      toc: true
+      toc_depth: 3
+      toc_float: true
+      
+vignette: >
+  %\VignetteIndexEntry{Plot Demonstration}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(NetPhorce)
+```
+
+
+## 1.0 Process the Data
+```{r processFullData, results='hide'}
+## Loading One Condition Data
+data("twoConditionsExample", package = "NetPhorce")
+
+## ## Identify the Key Columns
+identifiedCols <- confirmColumnNames(rawMaxQuant = twoConditionsExample,
+                                     positionCol = "Position",
+                                     reverseCol = "Reverse",
+                                     localizationProbCol = "Localization prob",
+                                     potentialContaminationCol = "Potential contaminant",
+                                     aminoAcidCol = "Amino acid",
+                                     uniqueIDCol = "Protein",
+                                     seqWindowIDCol = "Sequence window",
+                                     fastaIDCol = "Fasta headers")
+
+## Identify the Intensity Columns with Condition, Time Point and Replication Information
+intensityCols <- confirmIntensityColumns(rawMaxQuant = twoConditionsExample,
+                                         intensityPattern = "con_time_rep",
+                                         verbose = TRUE)
+
+## Process the data based on the identified columns
+netPhorceData <- processData(rawMaxQuant = twoConditionsExample,
+                             processedColNames = identifiedCols,
+                             processedIntensity = intensityCols,
+                             minReplication = 3,
+                             minLocalProb = 0.75)
+
+## Validating the Kinase/Phosphatase Information
+netPhorceData <- validateKinaseTable(netPhorceData = netPhorceData,
+                                     defaultKinaseTable = TRUE,
+                                     abbrev = "Ath")
+
+## Regulation Validation based on user inputs
+netPhorceData <- regulationCheck(netPhorceData = netPhorceData,
+                                 upReg = 0.25,
+                                 downReg = 0.25,
+                                 absMinThreshold = 0.1,
+                                 qValueCutOff = 0.05,
+                                 verbose = TRUE)
+
+## Network Analysis
+netPhorceData <- networkAnalysis(netPhorceData = netPhorceData,
+                               requestPlotData = TRUE)
+```
+
+## 2.0 Diganostic/Statistcal Plots
+## 2.1 Distribution Plot  {.tabset}
+### 2.1.1 Static Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotDistribution(netPhorceData = netPhorceData,
+                 condition = "Col0",
+                 plotly = FALSE)
+```
+
+### 2.1.2 Interactive Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotDistribution(netPhorceData = netPhorceData,
+                 condition = "Col0",
+                 plotly = TRUE)
+```
+
+## 2.2 Histogram and Boxplot  {.tabset}
+#### 2.2.1 Histogram and Boxplot Side-by-Side Plot
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotHistBox(netPhorceData = netPhorceData,
+             condition = "tot3",
+             histogram = TRUE,
+             boxplot = TRUE)
+```
+
+### 2.2.2 Boxplot Only
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotHistBox(netPhorceData = netPhorceData,
+             condition = "tot3",
+             histogram = FALSE,
+             boxplot = TRUE)
+```
+
+### 2.2.3 Histogram Only
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotHistBox(netPhorceData = netPhorceData,
+             condition = "tot3",
+             histogram = TRUE,
+             boxplot = FALSE)
+```
+
+
+## 2.3 PCA Plot  {.tabset}
+### 2.3.1 Static Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotPCA(netPhorceData = netPhorceData,
+        condition = "Col0",
+        normalized = FALSE,
+        plotly = FALSE)
+```
+
+### 2.3.2 Interactive Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotPCA(netPhorceData = netPhorceData,
+        condition = "tot3",
+        normalized = TRUE,
+        plotly = TRUE)
+```
+
+
+## 2.4 Heatmap based on Unique IDs
+### 2.4.1 Identify Unique IDs
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+uniqueIDs <- 
+  findUniqueIDs(netPhorceData = netPhorceData,
+                uniqueIDList = c(
+                  # Significant Set Examples: 
+                  "AT1G13030.1", "AT1G13360.3", "AT1G42550.1", 
+                  # Unique/Abscence Set Examples 
+                  "AT1G17280.9", "AT1G22310.2", "AT1G23890.2" 
+                ),
+                verbose = TRUE)
+```
+### 2.4.2 Heatmap Based on Found Unique IDs - Significant Set Interactive Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotUniqueIDsHeatmaps(netPhorceData = netPhorceData,
+                      foundUniqueIDs = uniqueIDs,
+                      heatmapType = "Significant",
+                      minQVal = 0.05,
+                      plotly = TRUE)
+```
+
+## 2.4.2 Heatmap Based on Found Unique IDs - Absence/Presence Set Static Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotUniqueIDsHeatmaps(netPhorceData = netPhorceData,
+                      foundUniqueIDs = uniqueIDs,
+                      heatmapType = "AbsencePresence",
+                      plotly = FALSE)
+```
+
+## 2.4 Heatmap based on Cluster IDs
+### 2.4.1 Identify Cluster IDs from Significant Set
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+clusterIDs_Sig <- 
+  findClusters(netPhorceData = netPhorceData, 
+               clusterIDs = c(0),
+               heatmapType = "Significant",
+               minQVal = 0.1,
+               verbose = TRUE)
+```
+
+### 2.4.2 Identify Cluster IDs from AbsencePresence Set
+*Note, you do not need to supply minQVal for Abscence Presence Heatmap*
+
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+clusterIDs_AbsPrs <- 
+  findClusters(netPhorceData = netPhorceData, 
+               clusterIDs = c(1, 2),
+               heatmapType = "AbsencePresence",
+               verbose = TRUE)
+```
+
+### 2.4.3 Heatmap Based on Found Unique IDs - Significant Set Interactive Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotClustersHeatmap(netPhorceData = netPhorceData,
+                    foundClusterIDs = clusterIDs_Sig,
+                    plotly = TRUE)
+```
+
+### 2.4.4 Heatmap Based on Found Unique IDs - Significant Set Static Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotClustersHeatmap(netPhorceData = netPhorceData,
+                    foundClusterIDs = clusterIDs_AbsPrs,
+                    plotly = FALSE)
+```
+
+## 2.6 Single or Multiple Peptides Plot
+### 2.6.1 Extract Peptide ID
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+peptideIDs <- 
+  findPeptideIDs(netPhorceData = netPhorceData, 
+                 peptideIDList = c("AT1G01320.2_S1349_1", "AT1G05560.1_S153_1", "AT1G01320.2_S149_1"))
+```
+
+
+### 2.6.2 Single Peptide Plot - Interactive Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotSinglePeptide(netPhorceData = netPhorceData,
+                   foundPepetidesIDs = peptideIDs,
+                   plotAll = FALSE,
+                   plotly = TRUE)
+```
+
+
+### 2.6.3 Single Peptide Plot - Static Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotSinglePeptide(netPhorceData = netPhorceData,
+                   foundPepetidesIDs = peptideIDs,
+                   plotAll = FALSE,
+                   plotly = FALSE)
+```
+
+### 2.6.4 Multiple Peptides Plot - Interactive Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotMultiPeptides(netPhorceData = netPhorceData,
+                  foundPepetidesIDs = peptideIDs,
+                  condition = "Col0",
+                  plotly = TRUE)
+```
+
+
+### 2.6.5 Multiple Peptides Plot - Static Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotMultiPeptides(netPhorceData = netPhorceData,
+                  foundPepetidesIDs = peptideIDs,
+                  condition = "tot3",
+                  plotly = FALSE)
+```
+
+## 3.0 Regulation Plot
+### 3.1 Regulation Plot - Interactive Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotRegulation(netPhorceData = netPhorceData ,
+               condition = "Col0",
+               plotly = TRUE)
+```
+
+
+### 3.2 Regulation Plot - Static Version
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotRegulation(netPhorceData = netPhorceData ,
+               condition = "tot3",
+               plotly = FALSE)
+```
+
+## 4.0 Network
+```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
+plotNetPhorce(netPhorceData = netPhorceData,
+              condition = "tot3",
+              FASTADescription = TRUE)
+```
+
+
