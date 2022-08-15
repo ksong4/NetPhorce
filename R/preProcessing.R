@@ -98,6 +98,7 @@ confirmColumnNames = function(rawMaxQuant = rawMaxQuant,
 #' @param filterCon (Optional). A list of conditions that you want to process. Only conditions from this list will be included in the downstream analyses.. E.g., c("Con1", "Con2)
 #' @param filterTime (Optional). A list of time points that you want to process. Only time points within this list will be included in the downstream analyses. E.g., c("0min", "5min", "15min")
 #' @param filterRep (Optional). A list of replications that you want to process. Only replications from this list will be included in the downstream analyses. E.g., c("R1", "R3", "R4")
+#' @param verbose (Optional). If TRUE, print a summary table of the intensity columns statistics for verification.
 #' @return list of data.frames
 #' @export
 #' @examples
@@ -217,7 +218,8 @@ confirmIntensityColumns = function(rawMaxQuant = rawMaxQuant,
 #'                                 	aminoAcidCol = "Amino acid",
 #'                	                 uniqueIDCol = "Protein",
 #'                                 	seqWindowIDCol = "Sequence window",
-#'                                 	fastaIDCol = "Fasta headers") ## Identify the Intensity Columns with Condition, Time Point and Replication Information
+#'                                 	fastaIDCol = "Fasta headers")
+#' ## Identify the Intensity Columns with Condition, Time Point and Replication Information
 #' intensityCols <- confirmIntensityColumns(rawMaxQuant = oneConditionExample,
 #'                                      	intensityPattern = "con_time_rep",
 #'                                      	verbose = TRUE)
@@ -239,7 +241,7 @@ validateKinaseTable <- function(netPhorceData = netPhorceData,
                                 species = NULL,
                                 verbose = TRUE){
   if(defaultKinaseTable == TRUE){
-    data(kinasesPhosphatases)
+    data(kinasesPhosphatases, envir=environment())
     Kinases = kinasesPhosphatases
     Kinases = Kinases %>% mutate(ID, sub("_", "-", ID)) %>% mutate(ID = str_to_upper(ID))
     colnames(Kinases) <- toupper(colnames(Kinases))
@@ -249,11 +251,11 @@ validateKinaseTable <- function(netPhorceData = netPhorceData,
 
     if(is.null(abbrev) & is.null(species)){
       stop("Please enter a valid abbreviate or full species names from the preload
-           kinase/phosphatase dataset. Use checkPreloadKinaseTable() to see what species are avaliable. ")
+           kinase/phosphatase dataset. Use `checkPreloadKinaseTable()` to see what species are avaliable. ")
     } else if(is.null(species)){
       if(!(abbrev %in% unique(Kinases$ABB))){
         stop("Please enter a valid abbreviate names from the preload
-         kinase/phosphatase dataset. Use checkPreloadKinaseTable() to see what species are avaliable. ")
+         kinase/phosphatase dataset. Use `checkPreloadKinaseTable()` to see what species are avaliable. ")
       } else {
         Kinases <- subset(Kinases, ABB == abbrev)
         kinaseTableCheck = TRUE
@@ -261,7 +263,7 @@ validateKinaseTable <- function(netPhorceData = netPhorceData,
     } else if(is.null(abbrev)){
       if(!(species %in% unique(Kinases$SPECIES))){
         stop("Please enter a valid abbreviate names from the preload
-           kinase/phosphatase dataset. Use checkPreloadKinaseTable() to see what species are avaliable. ")
+           kinase/phosphatase dataset. Use `checkPreloadKinaseTable()` to see what species are avaliable. ")
       } else {
         Kinases <- subset(Kinases, SPECIES == species)
         kinaseTableCheck = TRUE
@@ -359,7 +361,7 @@ validateKinaseTable <- function(netPhorceData = netPhorceData,
 #' checkPreloadKinaseTable(Abbrev = "Ath")
 #' }
 checkPreloadKinaseTable <- function(Abbrev = NULL){
-  data(kinasesPhosphatases)
+  data(kinasesPhosphatases, envir=environment())
   Kinases = kinasesPhosphatases
   Kinases = Kinases %>% mutate(ID, sub("_", "-", ID)) %>% mutate(ID = str_to_upper(ID))
   colnames(Kinases) <- toupper(colnames(Kinases))

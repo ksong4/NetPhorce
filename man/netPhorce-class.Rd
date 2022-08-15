@@ -12,7 +12,8 @@ Contains the outputs from the phosphoproteome data analysis, statistical analysi
 \item{data.filtered.aov.summary}{Contains the  anova results in a long format.}
 \item{regulationData}{Contains data associated with regulation check. }
 \item{netPhorceResults}{Contains the network inference data. }
-\item{networkPlotData}{Contains the data needed for network plotting using \code{\link[visNetwork]{-package}} package}
+\item{networkPlotData}{Contains the data needed for network plotting using \code{\link[visNetwork:visNetwork]{visNetwork::visNetwork()}} from the visNetwork package.}
 \item{Misc}{Contains accessory data including default plotting colors and FASTA Keys, if present.}
 }
 }
+\keyword{internal}

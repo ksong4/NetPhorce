@@ -21,3 +21,4 @@ expected behavior.
 \seealso{
 \code{\link[methods]{show}}
 }
+\keyword{internal}

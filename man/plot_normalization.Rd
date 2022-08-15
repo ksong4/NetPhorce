@@ -26,3 +26,4 @@ also listed here as necessary functions for plot_normalization.
 \examples{
 NULL
 }
+\keyword{internal}

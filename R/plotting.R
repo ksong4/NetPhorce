@@ -1245,7 +1245,9 @@ plotClustersHeatmap <- function(netPhorceData = netPhorceData,
 #'                              minLocalProb = 0.75)
 #' ## Extract peptides from the NetPhorce Data
 #' findPeptideIDs(netPhorceData = netPhorceData,
-#'                peptideIDList = c("AT1G01320.2_S1349_1", "AT1G05560.1_S153_1", "AT1G01320.2_S149_1"))
+#'                peptideIDList = c("AT1G01320.2_S1349_1",
+#'                                  "AT1G05560.1_S153_1",
+#'                                  "AT1G01320.2_S149_1"))
 #' }
 findPeptideIDs <- function(netPhorceData = netPhorceData,
                            peptideIDList = NULL){
@@ -1285,7 +1287,7 @@ findPeptideIDs <- function(netPhorceData = netPhorceData,
 #'
 #' @description Return if the input unque ID is in the dataset and filter out current results related to this
 #' @param netPhorceData (Required). Processed NetPhorce Object
-#' @param foundPepetidesIDs (Required). Single or Multiple Peptides ID, you can use \code{\link{ foundPepetidesIDs }} with ` peptideIDList = NULL to extract a full table of avaliable peptides.
+#' @param foundPepetidesIDs (Required). Single or Multiple Peptides ID, you can use \code{foundPepetidesIDs} with ` peptideIDList = NULL to extract a full table of avaliable peptides.
 #' @param plotAll (Optional). If TRUE, all matched peptides provided will be plotted in their individual plots.
 #' @param plotly (Required). If TRUE, output an interactive \code{\link{plotly}} version, else output a static \code{\link{ggplot2}} version.
 #' @return one or multiple ggplot/plotly object(s)
@@ -1317,7 +1319,9 @@ findPeptideIDs <- function(netPhorceData = netPhorceData,
 #' ## Provided IDs all matched the IDs in the netPhorce Data
 #' peptideIDs <-
 #'   findPeptideIDs(netPhorceData = netPhorceData,
-#'                  peptideIDList = c("AT1G01320.2_S1349_1", "AT1G05560.1_S153_1", "AT1G01320.2_S149_1"))
+#'                  peptideIDList = c("AT1G01320.2_S1349_1",
+#'                                    "AT1G05560.1_S153_1",
+#'                                    "AT1G01320.2_S149_1"))
 #' ## Plot the first Phosphopeptide ID - GGPLOT (Static) Version
 #' plotSinglePeptide(netPhorceData = netPhorceData,
 #'                    foundPepetidesIDs = peptideIDs,
@@ -1521,7 +1525,8 @@ plotSinglePeptide <- function(netPhorceData = netPhorceData,
 #'
 #' @description Return the intensity pattern across multiple time points for the provided phosphopeptide IDs.
 #' @param netPhorceData (Required). Processed NetPhorce Object
-#' @param foundPepetidesIDs (Required). Single or multiple peptide IDs. Use \code{\link{ foundPepetidesIDs }} with ` peptideIDList = NULL ` to extract a full table of available peptide IDs.
+#' @param condition (Required). Select a specific condition from your experiment.
+#' @param foundPepetidesIDs (Required). Single or multiple peptide IDs. Use \code{foundPepetidesIDs} with ` peptideIDList = NULL ` to extract a full table of available peptide IDs.
 #' @param plotly (Required). If TRUE, output an interactive \code{\link{plotly}} version, else output a static \code{\link{ggplot2}} version.
 #' @return list of dataframes
 #' @export
@@ -1552,7 +1557,9 @@ plotSinglePeptide <- function(netPhorceData = netPhorceData,
 #' ## Provided IDs all matched the IDs in the netPhorce Data
 #' peptideIDs <-
 #'   findPeptideIDs(netPhorceData = netPhorceData,
-#'                  peptideIDList = c("AT1G01320.2_S1349_1", "AT1G05560.1_S153_1", "AT1G01320.2_S149_1"))
+#'                  peptideIDList = c("AT1G01320.2_S1349_1",
+#'                                    "AT1G05560.1_S153_1",
+#'                                    "AT1G01320.2_S149_1"))
 #' ## Plot Mutliple Phosphopeptide IDs - PLOTLY (Interactive) Version
 #' plotMultiPeptides(netPhorceData = netPhorceData,
 #'                   foundPepetidesIDs = peptideIDs,
@@ -1701,6 +1708,7 @@ plotMultiPeptides <- function(netPhorceData = netPhorceData,
 #'                                     uniqueIDCol = "Protein",
 #'                                     seqWindowIDCol = "Sequence window",
 #'                                     fastaIDCol = "Fasta headers")
+#'
 #' ## Identify the Intensity Columns with Condition, Time Point and Replication Information
 #' intensityCols <- confirmIntensityColumns(rawMaxQuant = twoConditionsExample,
 #'                                          intensityPattern = "con_time_rep",

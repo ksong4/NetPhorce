@@ -10,9 +10,11 @@
 #' @param se_norm (Required). SummarizedExperiment object from the NetPhorce Object. normalized log2-transformed raw count.
 #' @param filterCondition (Required). Experimental condition.
 #' @importFrom magrittr %>%
-#' @import dplyr tidyr purrr tibble methods SummarizedExperiment qvalue vsn stringr utils ggplot2 ggpubr ellipse visNetwork dynamicTreeCut forcats
+#' @import dplyr tidyr purrr tibble methods SummarizedExperiment vsn stringr utils ggplot2 ggpubr ellipse visNetwork dynamicTreeCut forcats
 #' @rawNamespace import(plotly, except = c(last_plot))
 #' @rawNamespace import(assertthat, except = c(has_name))
+#' @import qvalue qvalue
+#' @importFrom vsn vsnMatrix predict
 #' @importFrom randomcoloR distinctColorPalette
 #' @importFrom stats median
 #' @importFrom stats quantile
@@ -25,6 +27,7 @@
 #' @importFrom igraph betweenness
 #' @importFrom igraph graph.data.frame
 #' @importFrom scales rescale
+#' @keywords internal
 #' @return plot object
 #' @examples
 #' NULL

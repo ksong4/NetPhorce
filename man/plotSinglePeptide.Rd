@@ -14,7 +14,7 @@ plotSinglePeptide(
 \arguments{
 \item{netPhorceData}{(Required). Processed NetPhorce Object}
 
-\item{foundPepetidesIDs}{(Required). Single or Multiple Peptides ID, you can use \code{\link{ foundPepetidesIDs }} with ` peptideIDList = NULL to extract a full table of avaliable peptides.}
+\item{foundPepetidesIDs}{(Required). Single or Multiple Peptides ID, you can use \code{foundPepetidesIDs} with ` peptideIDList = NULL to extract a full table of avaliable peptides.}
 
 \item{plotAll}{(Optional). If TRUE, all matched peptides provided will be plotted in their individual plots.}
 
@@ -53,7 +53,9 @@ netPhorceData <- processData(rawMaxQuant = twoConditionsExample,
 ## Provided IDs all matched the IDs in the netPhorce Data
 peptideIDs <-
   findPeptideIDs(netPhorceData = netPhorceData,
-                 peptideIDList = c("AT1G01320.2_S1349_1", "AT1G05560.1_S153_1", "AT1G01320.2_S149_1"))
+                 peptideIDList = c("AT1G01320.2_S1349_1",
+                                   "AT1G05560.1_S153_1",
+                                   "AT1G01320.2_S149_1"))
 ## Plot the first Phosphopeptide ID - GGPLOT (Static) Version
 plotSinglePeptide(netPhorceData = netPhorceData,
                    foundPepetidesIDs = peptideIDs,

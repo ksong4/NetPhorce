@@ -43,6 +43,8 @@ netPhorceData <- processData(rawMaxQuant = twoConditionsExample,
                              minLocalProb = 0.75)
 ## Extract peptides from the NetPhorce Data
 findPeptideIDs(netPhorceData = netPhorceData,
-               peptideIDList = c("AT1G01320.2_S1349_1", "AT1G05560.1_S153_1", "AT1G01320.2_S149_1"))
+               peptideIDList = c("AT1G01320.2_S1349_1",
+                                 "AT1G05560.1_S153_1",
+                                 "AT1G01320.2_S149_1"))
 }
 }

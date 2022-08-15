@@ -33,6 +33,7 @@ identifiedCols <- confirmColumnNames(rawMaxQuant = twoConditionsExample,
                                     uniqueIDCol = "Protein",
                                     seqWindowIDCol = "Sequence window",
                                     fastaIDCol = "Fasta headers")
+
 ## Identify the Intensity Columns with Condition, Time Point and Replication Information
 intensityCols <- confirmIntensityColumns(rawMaxQuant = twoConditionsExample,
                                          intensityPattern = "con_time_rep",

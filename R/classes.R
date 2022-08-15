@@ -11,13 +11,14 @@ setClassUnion("data.frameOrNull", c("data.frame", "NULL"))
 #'   \item{data.filtered.aov.summary}{Contains the  anova results in a long format.}
 #'   \item{regulationData}{Contains data associated with regulation check. }
 #'   \item{netPhorceResults}{Contains the network inference data. }
-#'   \item{networkPlotData}{Contains the data needed for network plotting using \code{\link[visNetwork]{-package}} package}
+#'   \item{networkPlotData}{Contains the data needed for network plotting using \code{\link[visNetwork:visNetwork]{visNetwork::visNetwork()}} from the visNetwork package.}
 #'   \item{Misc}{Contains accessory data including default plotting colors and FASTA Keys, if present.}
 #' }
 #'
 #' @name netPhorce-class
 #' @rdname netPhorce-class
 #' @exportClass netPhorce
+#' @keywords internal
 setClass(Class="netPhorce",
          representation = representation(
            Design = "list",
@@ -39,6 +40,7 @@ setClass(Class="netPhorce",
 #'
 #' @inheritParams methods::show
 #' @rdname show-methods
+#' @keywords internal
 #' @examples
 #' # data(netPhorceData)
 #' # show(netPhorceData)

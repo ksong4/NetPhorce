@@ -1,7 +1,12 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^_pkgdown\.yml$
-^docs$
 ^pkgdown$
 ^NetPhorce\.Rproj$
 ^LICENSE\.md$
+docs/*
+^README\.md$
+.git/*
+.gitignore
+images/*
+^\./man/figures$

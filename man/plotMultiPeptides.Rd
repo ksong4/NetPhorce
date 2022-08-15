@@ -14,7 +14,9 @@ plotMultiPeptides(
 \arguments{
 \item{netPhorceData}{(Required). Processed NetPhorce Object}
 
-\item{foundPepetidesIDs}{(Required). Single or multiple peptide IDs. Use \code{\link{ foundPepetidesIDs }} with \code{peptideIDList = NULL} to extract a full table of available peptide IDs.}
+\item{foundPepetidesIDs}{(Required). Single or multiple peptide IDs. Use \code{foundPepetidesIDs} with \code{peptideIDList = NULL} to extract a full table of available peptide IDs.}
+
+\item{condition}{(Required). Select a specific condition from your experiment.}
 
 \item{plotly}{(Required). If TRUE, output an interactive \code{\link{plotly}} version, else output a static \code{\link{ggplot2}} version.}
 }
@@ -51,7 +53,9 @@ netPhorceData <- processData(rawMaxQuant = twoConditionsExample,
 ## Provided IDs all matched the IDs in the netPhorce Data
 peptideIDs <-
   findPeptideIDs(netPhorceData = netPhorceData,
-                 peptideIDList = c("AT1G01320.2_S1349_1", "AT1G05560.1_S153_1", "AT1G01320.2_S149_1"))
+                 peptideIDList = c("AT1G01320.2_S1349_1",
+                                   "AT1G05560.1_S153_1",
+                                   "AT1G01320.2_S149_1"))
 ## Plot Mutliple Phosphopeptide IDs - PLOTLY (Interactive) Version
 plotMultiPeptides(netPhorceData = netPhorceData,
                   foundPepetidesIDs = peptideIDs,

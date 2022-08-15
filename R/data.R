@@ -22,7 +22,7 @@
 
 #' Pre-loaded Kinase/Phosphatase Table for 25 Species
 #'
-#' @description The table contains previously published kinase or phosphatase proteins for 25 species. Please use \code{\link{ checkPreloadKinaseTable}} to print a summary for the kinase and phosphatase table.
+#' @description The table contains previously published kinase or phosphatase proteins for 25 species. Please use \code{\link{checkPreloadKinaseTable}} to print a summary for the kinase and phosphatase table.
 #'
 #' @usage data(kinasesPhosphatases)
 #' @docType data

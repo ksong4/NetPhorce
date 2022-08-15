@@ -51,7 +51,7 @@ processData <- function(rawMaxQuant = rawMaxQuant,
   if (!(is.numeric(minReplication))) {
     stop("`Threshold` needs to be a integer greater than 3", call. = FALSE)
   } else {
-    if(minReplication < 3){
+    if(minReplication < 3){d
       stop("`Threshold` needs to be greater than 3", call. = FALSE)
     }
   }

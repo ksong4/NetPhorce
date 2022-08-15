@@ -23,6 +23,8 @@ confirmIntensityColumns(
 \item{filterTime}{(Optional). A list of time points that you want to process. Only time points within this list will be included in the downstream analyses. E.g., c("0min", "5min", "15min")}
 
 \item{filterRep}{(Optional). A list of replications that you want to process. Only replications from this list will be included in the downstream analyses. E.g., c("R1", "R3", "R4")}
+
+\item{verbose}{(Optional). If TRUE, print a summary table of the intensity columns statistics for verification.}
 }
 \value{
 list of data.frames

@@ -9,7 +9,7 @@ utils::globalVariables(c(
   "intensity", "Localization Probability", "value", "ReplicateCount",
   "Amino Acid", "Protein", "UniqueID", "SampleID", "name", "set", "Amino acid",
   "condition", "obs_tp", "normValue", "m", "experiement", "AOV", "result",
-  "argValue", "p.value", "term", "Multiplicity", "Reps",
+  "argValue", "p.value", "term", "Multiplicity", "Reps", "d",
   # findClusters
   "timepoint", "dist", "hclust", "Full", "Short", "Cluster", "cluster",
   # findPeptideIDs
@@ -26,8 +26,8 @@ utils::globalVariables(c(
   # plotDistribution
   "ConTime", "Value", "TimePoint",
   # regulationCheck
-  "argValue", "argValue == 0", "tp", "Model_name", "conditionMedian", "mvalue",
-  "change", "sigChange", "sigChangeSign", "# Fold change occurances",
+  "argValue", "avgValue  == 0", "tp", "Model_name", "conditionMedian", "mvalue",
+  "change", "sigChange", "sigChangeSign", "# Fold change occurances", "avgValue == 0",
   # validateKinaseTable
   "ABB", "Part1", "AA", "multiplicity", "FAMILY", "Total",
   # PlotMultiPeptides
