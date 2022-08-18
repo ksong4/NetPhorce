@@ -304,7 +304,7 @@ processData <- function(rawMaxQuant = rawMaxQuant,
               mutate(qvalue = qvalue(p.value, lfdr.out = TRUE)[["qvalues"]])
       } else {
           if (n > 1) {
-              if (t < 3) {
+              if (t == 1) {
                   noNetwork <- TRUE
                   cat("There are less than 3 time points detected, the subsequent network analysis portion
                         is disabled. Please use at least 3 time points to enable the network calculation.")
