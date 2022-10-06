@@ -121,7 +121,7 @@ processData <- function(rawMaxQuant = rawMaxQuant,
 
 
   data.select <- data.select %>%
-    dplyr::select(UniqueID, starts_with("Intensity") & matches("___\\d"))
+    dplyr::select(UniqueID, starts_with("Intensity ") & matches("___\\d"))
 
   ## Unique Protein Column Validation
   if(anyDuplicated(as.vector(data.select$UniqueID))>0){
@@ -137,6 +137,7 @@ processData <- function(rawMaxQuant = rawMaxQuant,
   newOrder <- c("measure", intensityColNameOrder$truth, "Multiplicity")
 
   data.t = data.select %>% na_if(0) %>% pivot_longer(-UniqueID, values_drop_na=TRUE) %>%
+    mutate(value = as.numeric(value)) %>%
     separate(name, into = c(newOrder), remove=FALSE)
   # print(head(data.t))
   data.t = data.t %>% unite(SampleID,condition,timepoint,replicate,remove=FALSE) %>%

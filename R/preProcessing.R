@@ -527,6 +527,7 @@ regulationCheck <- function(netPhorceData = netPhorceData,
     group_by(condition, UniqueID) %>% filter(any(sigChangeSign != 0)) %>% ungroup() %>%
     mutate(discreteState = case_when(
       abs(mvalue) >= abs(conditionMedian) ~ 5,
+      mvalue == 0 ~ 1,
       TRUE ~ sign(mvalue)*ntile(abs(mvalue), numberOfDiscreteStates)))
 
   # print(data.significant.proteins)
