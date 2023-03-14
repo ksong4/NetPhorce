@@ -13,7 +13,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-library(NetPhorce)
 library(DT)
 ```
 
@@ -21,7 +20,13 @@ library(DT)
 ## Introduction
 The following tutorials is based on a single condition experiment data. 
 
-## 1.0 Loading One Condition Example
+## 1.0 NetPhorce loading 
+```{r, message=F, error=F}
+library(NetPhorce)
+paste0("NetPhorce Version: ", packageVersion("NetPhorce"))
+```
+
+## 2.0 Loading One Condition Example
 ```{r}
 ## Loading One Condition Data
 data("oneConditionExample", package = "NetPhorce")
@@ -37,8 +42,8 @@ DT::datatable(oneConditionExample,
               )) 
 ```
 
-## 2.0 Pre-processing the raw MaxQuant data
-### 2.1 Identifying the Key Columns
+## 3.0 Pre-processing the raw MaxQuant data
+### 3.1 Identifying the Key Columns
 ```{r}
 ## Identify the Key Columns
 identifiedCols <- confirmColumnNames(rawMaxQuant = oneConditionExample,
@@ -52,7 +57,7 @@ identifiedCols <- confirmColumnNames(rawMaxQuant = oneConditionExample,
                                      fastaIDCol = "Fasta headers")
 ```
 
-### 2.2 Identifying the pattern for the intensity columns
+### 3.2 Identifying the pattern for the intensity columns
 ```{r}
 ## Identify the Intensity Columns with Condition, Time Point and Replication Information
 intensityCols <- confirmIntensityColumns(rawMaxQuant = oneConditionExample,
@@ -60,7 +65,7 @@ intensityCols <- confirmIntensityColumns(rawMaxQuant = oneConditionExample,
                                          verbose = TRUE)
 ```
 
-## 3.0 Process the raw MaxQuant data
+## 4.0 Process the raw MaxQuant data
 ```{r}
 ## Process the data based on the identified columns
 netPhorceData <- processData(rawMaxQuant = oneConditionExample,
@@ -70,7 +75,7 @@ netPhorceData <- processData(rawMaxQuant = oneConditionExample,
                              minLocalProb = 0.75)
 ```
 
-## 4.0 Validate the Kinases and Phosphatase data for the processed netPhorce data
+## 5.0 Validate the Kinases and Phosphatase data for the processed netPhorce data
 ```{r}
 ## Validating the Kinase/Phosphatase Information
 netPhorceData <- validateKinaseTable(netPhorceData = netPhorceData,
@@ -78,7 +83,7 @@ netPhorceData <- validateKinaseTable(netPhorceData = netPhorceData,
                                      abbrev = "Ath")
 ```
 
-## 5.0 Confirmation on the Regulation Thresholds for the netPhorce data
+## 6.0 Confirmation on the Regulation Thresholds for the netPhorce data
 ```{r}
 ## Regulation Validation based on user inputs
 netPhorceData <- regulationCheck(netPhorceData = netPhorceData,
@@ -89,10 +94,22 @@ netPhorceData <- regulationCheck(netPhorceData = netPhorceData,
                                  verbose = TRUE)
 ```
 
-## 6.0 Network Anlaysis
+## 7.0 Network Anlaysis
 ```{r}
 ## Network Analysis
 netPhorceData <- networkAnalysis(netPhorceData = netPhorceData,
                                requestPlotData = TRUE)
 
 ```
+
+## 8.0 Session Info
+```{r}
+sessionInfo()
+```
+
+
+
+
+
+
+

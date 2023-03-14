@@ -1,9 +1,10 @@
-pandoc: 2.11.4
-pkgdown: 2.0.6
+pandoc: 2.19.2
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   NetPhorce: NetPhorce.html
   rMD_V2_TwoConditionDemonstrationWithPlots: rMD_V2_TwoConditionDemonstrationWithPlots.html
   rMD_V3_DataExtractionTutorial: rMD_V3_DataExtractionTutorial.html
-last_built: 2022-08-18T13:06Z
+  rMD_V4_UseOwnData: rMD_V4_UseOwnData.html
+last_built: 2023-03-14T13:05Z
 

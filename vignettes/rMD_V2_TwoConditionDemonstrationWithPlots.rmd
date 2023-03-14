@@ -22,6 +22,11 @@ library(NetPhorce)
 ```
 
 
+## Loading library
+```{r, eval=FALSE}
+library(NetPhorce)
+```
+
 ## 1.0 Process the Data
 ```{r processFullData, results='hide'}
 ## Loading One Condition Data

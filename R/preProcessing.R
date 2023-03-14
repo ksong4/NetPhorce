@@ -146,6 +146,8 @@ confirmIntensityColumns = function(rawMaxQuant = rawMaxQuant,
   intensityCol <- grep("Intensity.+([[:alnum:]])+_([[:alnum:]])+_([[:alnum:]])+___",
                        colnames(rawMaxQuant), value = TRUE)
 
+
+  ## Obtain the summary column stats
   colTable <- data.frame(Full = intensityCol)
   colTable$Info1 <- sapply(strsplit(colTable$Full, "_|\\s"), "[", 2)
   colTable$Info2 <- sapply(strsplit(colTable$Full, "_|\\s"), "[", 3)
@@ -156,6 +158,26 @@ confirmIntensityColumns = function(rawMaxQuant = rawMaxQuant,
   colTable <- colTable[, 2:4]
   tempSplit <- toupper(strsplit(intensityCol_Input, "_")[[1]])
   colnames(colTable) <- c(tempSplit[1], tempSplit[2], tempSplit[3])
+  ## Processing Filtering for filtering
+  ### Filtering Condition
+  if(!(is.null(filterCon)) |!(is.null(filterTime)) | !(is.null(filterRep))){
+    applyFilter = TRUE
+    if(!is.null(filterTime)){
+      colTable = colTable %>%
+        filter(TIME %in% filterTime)
+    }
+    if(!is.null(filterCon)){
+      colTable = colTable %>%
+        filter(CON %in% filterCon)
+    }
+    if(!is.null(filterRep)){
+      colTable = colTable %>%
+        filter(REP %in% filterRep)
+    }
+  } else {
+    applyFilter = FALSE
+  }
+
   colTable <- colTable %>%
     distinct() %>%
     group_by(.data$CON, .data$TIME) %>%
@@ -163,13 +185,7 @@ confirmIntensityColumns = function(rawMaxQuant = rawMaxQuant,
     pivot_wider(names_from = CON, values_from = REPs)
   colnames(colTable)[1] <- "Time"
 
-  ## Processing Filtering for filtering
-  ### Filtering Condition
-  if(!(is.null(filterCon)) |!(is.null(filterTime)) | !(is.null(filterRep))){
-    applyFilter = TRUE
-  } else {
-    applyFilter = FALSE
-  }
+
 
   if(verbose){
     cat("First Found Column Name is:\n")

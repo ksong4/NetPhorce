@@ -1,0 +1,69 @@
+---
+title: "Using Your Own Data Guide"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{NetPhorce}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This guide will help guide you to savely load your own data.
+
+## 1. Correctly Loading MaxQuant Data
+The original column names from MaxQuant contains spaces, which must be parsed as space for `NetPhorce::confirmIntensityColumns()` function to run, here we demonstrate one of the ways to correctly load the MaxQuant data to R environment via `read_delim` from tidyverse.
+
+```{r, eval=FALSE}
+library(tidyverse)
+maxquantData = read_delim("<Path_to_Your_MaxQuant_File>", delim = "\t")
+```
+
+Once the data is loaded, please make sure you check on of the intensity column, i.e. "Intensity HT_0min_A___1", and make sure there is a space between "Intensity" and the TIME/REP/CON string. You can use the following script demo to check
+```{r, eval=FALSE}
+knownColumnName = "Intensity HT_0min_A___1"
+knownColumnName %in% colnames(maxquantData)
+```
+
+The output from the knownColumnName %in% colnames(maxquantData) need to return `TRUE`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

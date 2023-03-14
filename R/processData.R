@@ -75,7 +75,7 @@ processData <- function(rawMaxQuant = rawMaxQuant,
                     "FASTA Header" = processedColNames$fastaIDCol,
                     "Sequence Window" = processedColNames$seqWindowID)
   } else {
-    print("No FASTA Header Loaded")
+    message("\nNo FASTA Header Loaded")
     df2 <- df[, c(processedColNames$uniqueID, processedColNames$localizationProbCol, processedColNames$positionCol,
                     processedColNames$reverseCol, processedColNames$potentialContaminationCol, processedColNames$aminoAcidCol,
                     processedColNames$seqWindowID, processedIntensity$intensityCol
@@ -136,7 +136,8 @@ processData <- function(rawMaxQuant = rawMaxQuant,
   intensityColNameOrder <- processedIntensity$intensityColNameOrder
   newOrder <- c("measure", intensityColNameOrder$truth, "Multiplicity")
 
-  data.t = data.select %>% na_if(0) %>% pivot_longer(-UniqueID, values_drop_na=TRUE) %>%
+  ## The new replace for na_if, but I think the speed is slower
+  data.t = data.select %>% replace(.==0, NA) %>% pivot_longer(-UniqueID, values_drop_na=TRUE) %>%
     mutate(value = as.numeric(value)) %>%
     separate(name, into = c(newOrder), remove=FALSE)
   # print(head(data.t))
@@ -144,13 +145,20 @@ processData <- function(rawMaxQuant = rawMaxQuant,
     unite(UniqueID, UniqueID, Multiplicity) %>% dplyr::select(-name,-measure)
   # print(data.t)
   # print(data.t)
-  # if(intensity$applyFilter == TRUE){
-  #   if()
-  #   data.t <- data.t %>%
-  #     filter(timepoint %in% intensity$filterTime &
-  #              condition %in% intensity$filterCon &
-  #              replicate %in% intensity$filterRep)
-  # }
+  if(processedIntensity$applyFilter == TRUE){
+    if(!is.null(processedIntensity$filterTime)){
+      data.t <- data.t %>%
+        filter(timepoint %in% processedIntensity$filterTime)
+    }
+    if(!is.null(processedIntensity$filterCon)){
+      data.t <- data.t %>%
+        filter(condition %in% processedIntensity$filterCon)
+    }
+    if(!is.null(processedIntensity$filterRep)){
+      data.t <- data.t %>%
+        filter(replicate %in% processedIntensity$filterRep)
+    }
+  }
   # print(head(data.t))
 
   # ## Part 4
@@ -301,28 +309,59 @@ processData <- function(rawMaxQuant = rawMaxQuant,
           data.filtered.aov = data.filtered %>% filter(set == "StatsSet") %>% group_by(UniqueID) %>% nest() %>% ungroup() %>%
               mutate(AOV = map(data, ~ aov(normValue ~ replicate + timepoint + Error(replicate), data=.x)) ) %>%
               mutate(result = map(AOV,broom::tidy))
-          data.filtered.aov.summary = data.filtered.aov %>% dplyr::select(UniqueID,result) %>% unnest(cols = c(result)) %>% filter(!is.na(p.value)) %>%
+          ## Add Lambda = 0?
+          data.filtered.aov.summary = tryCatch({
+            data.filtered.aov %>% dplyr::select(UniqueID,result) %>% unnest(cols = c(result)) %>%
+              filter(!is.na(p.value)) %>%
+              filter(term == "condition") %>%
+              # mutate(qvalue = qvalue(p.value, lfdr.out = TRUE)[["qvalues"]])
               mutate(qvalue = qvalue(p.value, lfdr.out = TRUE)[["qvalues"]])
+          }, error = function(err){
+            data.filtered.aov.summary = data.filtered.aov %>% dplyr::select(UniqueID,result) %>%
+              unnest(cols = c(result)) %>% filter(!is.na(p.value)) %>%
+              mutate(qvalue = qvalue(p.value, lfdr.out = TRUE, pi0 = 1)[["qvalues"]])
+          })
       } else {
           if (n > 1) {
               if (t == 1) {
                   noNetwork <- TRUE
                   cat("There are less than 3 time points detected, the subsequent network analysis portion
                         is disabled. Please use at least 3 time points to enable the network calculation.")
-                  data.filtered.aov = data.filtered %>% filter(set == "StatsSet") %>%
+                  data.filtered.aov = data.filtered %>%
+                      mutate(replicate = as.character(replicate)) %>%
+                      filter(set == "StatsSet") %>%
                       group_by(UniqueID) %>% nest() %>% ungroup() %>%
                       mutate(AOV = map(data, ~ aov(normValue ~ replicate + condition + Error(replicate), data=.x)) ) %>%
                       mutate(result = map(AOV,broom::tidy))
-                  data.filtered.aov.summary = data.filtered.aov %>% dplyr::select(UniqueID,result) %>% unnest(cols = c(result)) %>% filter(!is.na(p.value)) %>%
+                  data.filtered.aov.summary = tryCatch({
+                    data.filtered.aov %>% dplyr::select(UniqueID,result) %>% unnest(cols = c(result)) %>%
+                      filter(!is.na(p.value)) %>%
+                      filter(term == "condition") %>%
+                      # mutate(qvalue = qvalue(p.value, lfdr.out = TRUE)[["qvalues"]])
                       mutate(qvalue = qvalue(p.value, lfdr.out = TRUE)[["qvalues"]])
+                  }, error = function(err){
+                    data.filtered.aov.summary = data.filtered.aov %>% dplyr::select(UniqueID,result) %>%
+                      unnest(cols = c(result)) %>% filter(!is.na(p.value)) %>%
+                      mutate(qvalue = qvalue(p.value, lfdr.out = TRUE, pi0 = 1)[["qvalues"]])
+                  })
               } else {
-                  data.filtered.aov = data.filtered %>% filter(set == "StatsSet") %>%
+                  data.filtered.aov = data.filtered %>%
+                      mutate(replicate = as.character(replicate)) %>%
+                      filter(set == "StatsSet") %>%
                       group_by(UniqueID) %>% nest() %>% ungroup() %>%
                       mutate(AOV = map(data, ~ aov(normValue ~ replicate + timepoint*condition + Error(replicate), data=.x)) ) %>%
                       mutate(result = map(AOV,broom::tidy))
-                  data.filtered.aov.summary = data.filtered.aov %>% dplyr::select(UniqueID,result) %>%
-                    unnest(cols = c(result)) %>% filter(!is.na(p.value)) %>%
-                      filter(term == "condition") %>% mutate(qvalue = qvalue(p.value, lfdr.out = TRUE)[["qvalues"]])
+                  data.filtered.aov.summary = tryCatch({
+                    data.filtered.aov %>% dplyr::select(UniqueID,result) %>% unnest(cols = c(result)) %>%
+                      filter(!is.na(p.value)) %>%
+                      filter(term == "condition") %>%
+                      # mutate(qvalue = qvalue(p.value, lfdr.out = TRUE)[["qvalues"]])
+                      mutate(qvalue = qvalue(p.value, lfdr.out = TRUE)[["qvalues"]])
+                  }, error = function(err){
+                    data.filtered.aov.summary = data.filtered.aov %>% dplyr::select(UniqueID,result) %>%
+                      unnest(cols = c(result)) %>% filter(!is.na(p.value)) %>%
+                      mutate(qvalue = qvalue(p.value, lfdr.out = TRUE, pi0 = 1)[["qvalues"]])
+                  })
 
               }
           }
