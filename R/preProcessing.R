@@ -138,7 +138,6 @@ confirmIntensityColumns = function(rawMaxQuant = rawMaxQuant,
     }
   }
 
-
   intensityColNameOrder <- data.frame(input = c("CON", "TIME", "REP"),
                                       order = c(conLoc, timeLoc, repLoc),
                                       truth = c("condition","timepoint","replicate"))
@@ -158,8 +157,7 @@ confirmIntensityColumns = function(rawMaxQuant = rawMaxQuant,
   colTable <- colTable[, 2:4]
   tempSplit <- toupper(strsplit(intensityCol_Input, "_")[[1]])
   colnames(colTable) <- c(tempSplit[1], tempSplit[2], tempSplit[3])
-  ## Processing Filtering for filtering
-  ### Filtering Condition
+  ## Processing Filtering
   if(!(is.null(filterCon)) |!(is.null(filterTime)) | !(is.null(filterRep))){
     applyFilter = TRUE
     if(!is.null(filterTime)){
@@ -184,8 +182,6 @@ confirmIntensityColumns = function(rawMaxQuant = rawMaxQuant,
     summarise(REPs = paste0(.data$REP, collapse = ";")) %>%
     pivot_wider(names_from = CON, values_from = REPs)
   colnames(colTable)[1] <- "Time"
-
-
 
   if(verbose){
     cat("First Found Column Name is:\n")

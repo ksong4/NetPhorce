@@ -328,7 +328,7 @@ processData <- function(rawMaxQuant = rawMaxQuant,
                   cat("There are less than 3 time points detected, the subsequent network analysis portion
                         is disabled. Please use at least 3 time points to enable the network calculation.")
                   data.filtered.aov = data.filtered %>%
-                      mutate(replicate = as.character(replicate)) %>%
+                      mutate(replicate = as.factor(replicate)) %>%
                       filter(set == "StatsSet") %>%
                       group_by(UniqueID) %>% nest() %>% ungroup() %>%
                       mutate(AOV = map(data, ~ aov(normValue ~ replicate + condition + Error(replicate), data=.x)) ) %>%
@@ -346,7 +346,7 @@ processData <- function(rawMaxQuant = rawMaxQuant,
                   })
               } else {
                   data.filtered.aov = data.filtered %>%
-                      mutate(replicate = as.character(replicate)) %>%
+                      mutate(replicate = as.factor(replicate)) %>%
                       filter(set == "StatsSet") %>%
                       group_by(UniqueID) %>% nest() %>% ungroup() %>%
                       mutate(AOV = map(data, ~ aov(normValue ~ replicate + timepoint*condition + Error(replicate), data=.x)) ) %>%
