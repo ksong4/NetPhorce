@@ -165,7 +165,8 @@ processData <- function(rawMaxQuant = rawMaxQuant,
   # print("4")
   setTxtProgressBar(pb, 4)
   data.filtered = data.t %>%
-    add_count(UniqueID, timepoint, condition, name = "obs_tp") %>% ### count up observations that are not zero for each proteinID
+    add_count(UniqueID, timepoint, condition, name = "obs_tp") %>%
+    ### count up observations that are not zero for each proteinID
     group_by(timepoint) %>% mutate(Reps = (length(unique(replicate)))) %>% ungroup() %>%
     group_by(UniqueID) %>% mutate(obs_tr = length(unique(condition))) %>%
     filter(any(obs_tp >= minReplication)  & all(obs_tp >= minReplication | obs_tp <= (Reps - minReplication))) %>% ungroup() %>%
@@ -418,4 +419,5 @@ processData <- function(rawMaxQuant = rawMaxQuant,
   )
   return(returnData)
 }
+0
 

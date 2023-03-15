@@ -2,7 +2,7 @@
 title: "Using Your Own Data Guide"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{NetPhorce}
+  %\VignetteIndexEntry{Using Your Own Data Guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   \usepackage[utf8]{inputenc}
