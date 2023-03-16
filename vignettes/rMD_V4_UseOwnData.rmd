@@ -18,7 +18,7 @@ This guide will help guide you to savely load your own data.
 The original column names from MaxQuant contains spaces, which must be parsed as space for `NetPhorce::confirmIntensityColumns()` function to run, here we demonstrate one of the ways to correctly load the MaxQuant data to R environment via `read_delim` from tidyverse.
 
 ```{r, eval=FALSE}
-library(tidyverse)
+library(readr)
 maxquantData = read_delim("<Path_to_Your_MaxQuant_File>", delim = "\t")
 ```
 
@@ -30,7 +30,9 @@ knownColumnName %in% colnames(maxquantData)
 
 The output from the knownColumnName %in% colnames(maxquantData) need to return `TRUE`.
 
-
+## 2. Time Units 
+Please make sure the time units you used for the analysis are based on the same unit. 
+For example, if 
 
 
 

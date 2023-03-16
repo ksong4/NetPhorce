@@ -695,10 +695,12 @@ findClusters <- function(netPhorceData = netPhorceData,
           if(verbose==TRUE){
             cat("The avaliable Clusters are: \n")
             cat(paste(clusters, collapse = ", "), "\n")
+            cat("Please use selected cluster(s) using the clusterIDs arguments,\n")
             cat("With a total of", nrow(UniqueID_Table), " peptides. \n")
             fullTable = UniqueID_Table %>% rename(PeptideID = Full, UniqueID = Short) %>%
               group_by(Cluster, UniqueID) %>% arrange(Cluster) %>%
               as_tibble()
+
             return(fullTable)
           } else{
             cat("No cluster was provided, returning a list of avaliable clusters if verbose = TRUE")
@@ -1071,6 +1073,9 @@ plotClustersHeatmap <- function(netPhorceData = netPhorceData,
   if(is.null(foundClusterIDs)){
     stop("Please run findClusters to identify the clusters you want for plotting. ",
          call. = FALSE)
+  }
+  if(is.null(suppressWarnings(foundClusterIDs$heatmapType))){
+    stop("Please select the correct clusters using findClusters() function's clusterID argument.")
   }
 
 
