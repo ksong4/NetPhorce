@@ -168,7 +168,7 @@ plotUniqueIDsHeatmaps(netPhorceData = netPhorceData,
 ```{r, fig.width=10, fig.asp = 0.8, out.width = "95%", warning=FALSE}
 clusterIDs_Sig <- 
   findClusters(netPhorceData = netPhorceData,
-               # clusterIDs = c(0),
+               clusterIDs = c(0),
                heatmapType = "Significant",
                minQVal = 0.1,
                verbose = TRUE)
@@ -181,6 +181,7 @@ clusterIDs_Sig <-
 clusterIDs_AbsPrs <- 
   findClusters(netPhorceData = netPhorceData, 
                clusterIDs = c(1),
+               minQVal = 0.1,
                heatmapType = "AbsencePresence",
                verbose = TRUE)
 ```

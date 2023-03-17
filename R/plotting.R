@@ -711,7 +711,7 @@ findClusters <- function(netPhorceData = netPhorceData,
 
     if(curSetName == "UniqueSet"){
       if(!any(data.clustered.avg$set == curSetName)){
-        stop("No significant peptides are found. ", call. = FALSE)
+        stop("No Absence Presence peptides are found. ", call. = FALSE)
       } else {
         heatmap_Unique_phosphosites.summary = data.clustered.avg %>% filter(set == "UniqueSet") %>%
           dplyr::select(-set) %>% nest(data = everything()) %>% ungroup() %>%
