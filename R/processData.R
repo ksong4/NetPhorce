@@ -43,7 +43,8 @@ processData <- function(rawMaxQuant = rawMaxQuant,
                         processedColNames = processedColNames,
                         processedIntensity = intensity,
                         minReplication = minReplication,
-                        minLocalProb = minLocalProb){
+                        minLocalProb = minLocalProb,
+                        skipNormalization = FALSE){
   ## Text Progress bar
   pb = txtProgressBar(min = 0, max = 12,
                       initial = 0, style = 3)
@@ -263,7 +264,11 @@ processData <- function(rawMaxQuant = rawMaxQuant,
   row_data = rownames(data.filtered.spread) %>% enframe(value = "ID") %>% mutate(name = ID) %>% as.data.frame
   se <- suppressMessages(SummarizedExperiment(assays = log2(as.matrix(data.filtered.spread)), colData = ConDesign, rowData = row_data))
   se@metadata$formula <- "~ tp + replicate"
-  se_norm = suppressMessages(normalize_vsn(se))
+  if (skipNormalization == TRUE) {
+    se_norm = se
+  } else {
+    se_norm = suppressMessages(normalize_vsn(se))
+  }
   data.norm = assays(se_norm)[[1]] %>% as.data.frame() %>% rownames_to_column("UniqueID") %>% as_tibble()
 
   # print("9")
