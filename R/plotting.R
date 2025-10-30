@@ -1749,7 +1749,7 @@ plotRegulation <- function(netPhorceData = netPhorceData,
                            plotly = TRUE){
   data.significant.proteins = netPhorceData@regulationData
   regColors = netPhorceData@Misc$colors_Reg
-  filteredData <- data.significant.proteins %>% filter(avgValue != 0) %>% filter(avgValue != change)
+  filteredData <- data.significant.proteins %>% filter(avgValue != 0) %>% filter(!near(avgValue,change))
   filteredData$sigChangeSign <- as.character(filteredData$sigChangeSign)
   ## Check Condition
   ConDesign <- netPhorceData@Design$ConDesign
